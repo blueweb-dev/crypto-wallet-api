@@ -1,0 +1,195 @@
+spring:
+  application:
+    name: cellpinda-coin-api
+  datasource:
+    url: jdbc:mysql://localhost:3306/wallet?useUnicode=true&useSSL=false&charaterEncoding=utf-8&serverTimezone=UTC
+#    url: jdbc:mariadb://127.0.0.1:3306/wallet?autoReconnect=true&amp;useUnicode=true&amp;charaterEncoding=utf-8  
+    username: cellpinda-api
+    password: by9lXW5uksGgmZNYmjlb
+    type: com.zaxxer.hikari.HikariDataSource
+    connectionProperties: useUnicode=true;characterEncoding=utf-8;autoReconnect=true
+    driver-class-name: org.mariadb.jdbc.Driver
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    properties:  
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        naming.implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+  # Message Queue API
+  kafka:
+#    bootstrap-servers: kafka.dev-kairex.inc:9092
+#    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: 'WLT_TRANSMIT'
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+# REST API
+server:
+  port: 80
+
+# App property
+app:
+  test-topic-name: 'WLT_TRANSMIT.KR00'
+
+## Log    
+logging:
+  level:
+    org.hibernate.SQL: info
+    crypto.wallet: debug
+
+wallet:
+  sync:
+    enabledSymbols: BTC,ETH,CPD
+    enabledERC20s: CPD
+    
+crypto:
+  btc: 
+    rpcurl: http://localhost:64101/
+    id: btc-rpc
+    pw: bV8NGx3WsNWU1FU9jVx3
+    sendmasteraccount: 'btc-sender'
+    sendaddr: 'mimXJSjdxbvweWVWbiRSykKaotxB7A2hMN'
+    pp: devtest
+    airdropaccount: btc-airdrop
+    testaddr: 'mhgvcAGq9PvdrKge4u1qpSEqWEkhS5YYZ7'
+    initialblock: 539180
+    minconfirm: 2
+    minamtgather: 0.1
+  bch:
+    rpcurl: http://dev.coin.kairex.com:10010/
+    id: bch-master
+    pw: Greenstage05
+    pp: 'devtest'
+    masteraccount: ''
+    masteraddr: 'bitcoincash:qzutj9t7ugdqdgjgpqym46m3uc849z9ehvm2a4ru7u'
+    useraccount: coin-user
+    testuseraddr: 'bitcoincash:qqqpd4cfvkm29n7eslxtc3jp98slge6qvul04yrw0v'
+    coldaddr: 'bitcoincash:qz7mnpsca5e7mwe57mxlf6de6jaz3spkku604cfcf4'
+    initialblock: 1244305
+#    initialblock: 537300 # kairex-prod-start    
+    minconfirm: 3
+    minamtgather: 2
+  ltc:
+    rpcurl: http://dev.coin.kairex.com:10009/
+    id: devtest
+    pw: devtest
+    pp: devtest
+    masteraccount: ''
+    masteraddr: 'QZCxetwyMSrh8xfJnAFSxFRvLGbGmDsc1Y'
+    useraccount: coin-user
+    testuseraddr: 'M9pRvSvAzP6NsvZsJyZTxboiXLGB1ihbVe'
+    coldaddr: 'MUkCQgsQcqdvafTgSKghpZhHzrGLg5BxeS'
+    initialblock: 1448800
+#    initialblock: 537300 # kairex-prod-start
+    minconfirm: 6
+    minamtgather: 10
+  bcd:
+    rpcurl: http://dev.coin.kairex.com:10002/
+    id: devtest
+    pw: devtest
+    pp: devtest
+    masteraccount: ''
+    masteraddr: '17AUw8Kbm49BaogwmimnxiYbWefqij4EdU'
+    useraccount: coin-user
+    testuseraddr: '1MSwvyv1xojryVZvmA7SJBX1m4AfpakdWG'
+    coldaddr: '1NPqdiVNi9sfmg1QVj6PkKH1KJ1dwgu9hi'
+    initialblock: 522524
+#    initialblock: 523500 # kairex-prod-start
+    minconfirm: 6
+    minamtgather: 100
+  doge:
+    rpcurl: http://dev.coin.kairex.com:10008/
+    id: dogecoin
+    pw: 5P3dUSSy3BoJA4EvunUC4k5UKDe7M71LwjWQHY4bTci4
+    pp: devtest
+    masteraccount: ''
+    masteraddr: 'DFbHDBYFRwVrYq1So2FqG1GSMQLWi8ZRKb'
+    useraccount: coin-user
+    testuseraddr: 'DDsVXjEV9owoXBySzHDEt9aAYDQJc6VQ59'
+    coldaddr: 'DNvUSypCDMvjDBx6adGgFPgUptLUNoLqPH'
+    initialblock: 2299231
+    minconfirm: 24
+    minamtgather: 70000
+  kai:
+    rpcurl: http://dev.coin.kairex.com:10003/
+    id: kai-master
+    pw: XQwu7i4qzFYFRbVvDt7M
+    pp: devtest
+    masteraddr: '1EhVPMsTSCVYsuJS3DjRsZ8KLA49WWXKAiwXj9'
+    testuseraddr: '1V7wZ2WvkeqStxeRNJ71oEj7Ls2E28vDCUtVmU'
+    coldaddr: '124cn4AR5vexDWkukzGTeNgN5A53k8tC2RKymn'
+    initialblock: 334308
+#    initialblock: 331000 # kairex-prod-start    
+    minconfirm: 6
+    minamtgather: 1000
+  eth:
+    rpcurl: http://dev.coin.kairex.com:10004/
+    pp: Kairex00!
+    masteraddr: '0xa447d425d098fe282a71eaffa97012e236f67045'
+    testuseraddr: '0xa447d425d098fe282a71eaffa97012e236f67045'
+    coldaddr: '0x42d4987c733cbd17ee98b77f62ac8e198400f684'
+    initialblock: 8074511 # Kovan
+#    initialblock: 5899000 # kairex-prod-start
+    mingasamt: 0.01
+    minconfirm: 48
+    minamtgather: 0.25
+  erc20:
+    rpcurl: http://dev.coin.kairex.com:10004/
+    datadirectory: http://dev.coin.kairex.com:8549/
+  bhpc:
+    contractaddress: '0xee74110fb5a1007b06282e0de5d73a61bf41d9cd'
+    minamtgather: 150
+    decimals: 1000000000000000000
+  zil:
+    contractaddress: '0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27'
+    minamtgather: 1000
+    decimals: 1000000000000
+  iost:
+    contractaddress: '0xfa1a856cfa3409cfa145fa4e20eb270df3eb21ab'
+    minamtgather: 2500
+    decimals: 1000000000000000000
+  etc:
+    rpcurl: http://dev.coin.kairex.com:10005/
+    pp: devtest
+    masteraddr: '0x45fd922acdf3095b0be3589ccf908e5318eb2826'
+    coldaddr: '0xa7b375188e0b434c56bbc3d70f5072eb2b2f9b61'
+    initialblock: 6104393
+#    initialblock: 6110000 # kairex-prod-start
+    testuseraddr: '0xa7b375188e0b434c56bbc3d70f5072eb2b2f9b61'
+    minconfirm: 48
+    minamtgather: 10
+  clo:
+    rpcurl: http://dev.coin.kairex.com:10011/
+    pp: 51Ni0Mnz12W8Zm2YoTjv
+    masteraddr: '0x3056e4132517bd56895f5b87f503a3ce2331096e'
+    coldaddr: '0xabc2f59141f25da605603cac7af3c8d47223f2c5'
+    initialblock: 645336
+    testuseraddr: '0x4048634f0f9e992a9ebaa9613c730cc2a56c1e57'
+    minconfirm: 24
+    minamtgather: 200
+  ada:
+    rpcurl: https://dev.coin.kairex.com:10006/
+    rpcexplorer: http://dev.coin.kairex.com:10007/
+    bp: rally,become,warm,people,once,parent,oak,figure,problem,decorate,praise,achieve
+    pp: 19F2C704C59BCFB26B1D1E31F39005119892819D45AB6904CFBE9050569F1BC6
+# prod: 6189D6C7AB8033F5AD60DD70E4B43EF896CDF8703DE163104073445F6F4A4095
+    walletId: 'Ae2tdPwUPEZ3p3m9tN7rVa4zFDTFTpsoXRUwU7ifYwt6oBUsYrZhKMFe1k2'
+    masteraccount: 2147483648
+    useraccount: 3504067111
+    masteraddr: 'DdzFFzCqrhsvDshmHuE3JwqZoTHfREmyqYoJPbTkJ7p2JRGAricepeENTDAoGdaZBRKHNAgFGmQ4utkTX6j5dFJTs9DCSBEHg4hSGmCj'
+    testuseraddr: 'DdzFFzCqrhskHTxi64J3CVFw8BrG7c3JMvZmd9SDjCL6ZUGvEBzNLNaCgTkfkJnX9JUZ8Wwur6mW4mHSL2rRKTEhHCiCJ9CkHa9hTGAL'
+    coldaddr: 'DdzFFzCqrhsqPGLxL934tSBMQXuSwtoGfyXp4MGD52qxVYrk8LhY5yiLkB4Eog6k2YXWU5gLKeDJa9pdoxG82qkrRViv3pKHAVpCPSor'
+    initialblock: 20180712082931
+    minconfirm: 2
+    minamtgather: 5000
